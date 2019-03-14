@@ -1,1 +1,3 @@
-nohup dfesp_xml_server -pubsub 3390 -http 3389 -plugindir /opt/sas/viya/home/SASEventStreamProcessingEngine/5.2/lib/tk -engine sasserver-3389 >> /home/sas/forrester/3389esp.log 2>&1 &
+PUBSUB=9901
+HTTP=9900
+nohup dfesp_xml_server -pubsub ${PUBSUB} -http ${HTTP} -engine sasserver-${HTTP} >> ~/${HTTP}esp.log 2>&1 &
