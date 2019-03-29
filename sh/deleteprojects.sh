@@ -1,3 +1,3 @@
-project="BankingLimitManagement"
-
-dfesp_xml_client -url "http://localhost:3389/SASESP/projects/${project}" -delete
+project=BankingLimitManagement
+port=3389
+dfesp_xml_client -url "http://localhost:${port}/SASESP/projects/${project}" -delete
