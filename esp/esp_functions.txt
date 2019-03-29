@@ -1,8 +1,12 @@
+This converts a string such as ‘2018-05-28T09:33:55.670Z’ into a timestamp within ESP. You just need to make sure the format in timeParse matches up to the input value.
+
 sum(product(timeParse(json(#JSON_Prop,'eventDateTime'),'%Y-%m-%dT%H:%M:%S'),1000000),product(substringAfter(substringBefore(json(#JSON_Prop,'eventDateTime'),'Z'), '.'),1000))
 
-
+This extracts JSON from a string
 <function name="locationType"><![CDATA[json(#JSON_Prop, 'header.originatorHeader.location.type')]]></function>
 
+
+This is a functional window that puts the two above together.
 
 
   <window-functional index="pi_EMPTY" pubsub="true" name="parseActive">
@@ -12,21 +16,6 @@ sum(product(timeParse(json(#JSON_Prop,'eventDateTime'),'%Y-%m-%dT%H:%M:%S'),1000
         <field name="originatorId" type="string"/>
         <field name="sessionId" type="string"/>
         <field name="eventDateTime" type="stamp"/>
-        <field name="routingKey" type="string"/>
-        <field name="startDateTime" type="stamp"/>
-        <field name="endDateTime" type="stamp"/>
-        <field name="customerUUID" type="string"/>
-        <field name="locationType" type="string"/>
-        <field name="locationProperty" type="string"/>
-        <field name="locationValue" type="string"/>
-        <field name="tripId" type="string"/>
-        <field name="denom" type="double"/>
-        <field name="coinIn" type="double"/>
-        <field name="coinOut" type="double"/>
-        <field name="games" type="double"/>
-        <field name="hotPlayer" type="double"/>
-        <field name="abandonedCard" type="double"/>
-        <field name="messageType" type="string"/>
       </fields>
     </schema>
     <function-context>
@@ -38,21 +27,6 @@ sum(product(timeParse(json(#JSON_Prop,'eventDateTime'),'%Y-%m-%dT%H:%M:%S'),1000
         <function name="originatorId"><![CDATA[json(#JSON_Prop, 'header.originatorId')]]></function>
         <function name="sessionId"><![CDATA[json(#JSON_Prop, 'header.originatorHeader.sessionId')]]></function>
         <function name="eventDateTime"><![CDATA[sum(product(timeParse(json(#JSON_Prop,'header.originatorHeader.eventDateTime'),'%Y-%m-%dT%H:%M:%S'),1000000),product(substringAfter(substringBefore(json(#JSON_Prop,'header.originatorHeader.eventDateTime'),'Z'), '.'),1000))]]></function>
-        <function name="routingKey"><![CDATA[json(#JSON_Prop, 'header.originatorHeader.routingKey')]]></function>
-        <function name="startDateTime"><![CDATA[sum(product(timeParse(json(#JSON_Prop,'header.originatorHeader.startDateTime'),'%Y-%m-%dT%H:%M:%S'),1000000),product(substringAfter(substringBefore(json(#JSON_Prop,'header.originatorHeader.startDateTime'),'Z'), '.'),1000))]]></function>
-        <function name="endDateTime"><![CDATA[sum(product(timeParse(json(#JSON_Prop,'header.originatorHeader.endDateTime'),'%Y-%m-%dT%H:%M:%S'),1000000),product(substringAfter(substringBefore(json(#JSON_Prop,'header.originatorHeader.endDateTime'),'Z'), '.'),1000))]]></function>
-        <function name="customerUUID"><![CDATA[json(#JSON_Prop, 'header.originatorHeader.customerUUID')]]></function>
-        <function name="locationType"><![CDATA[json(#JSON_Prop, 'header.originatorHeader.location.type')]]></function>
-        <function name="locationProperty"><![CDATA[json(#JSON_Prop, 'header.originatorHeader.location.property')]]></function>
-        <function name="locationValue"><![CDATA[json(#JSON_Prop, 'header.originatorHeader.location.value')]]></function>
-        <function name="tripId"><![CDATA[json(#JSON_Prop, 'header.tripId')]]></function>
-        <function name="denom"><![CDATA[json(#JSON_Prop, 'body.gamingData.denom')]]></function>
-        <function name="coinIn"><![CDATA[json(#JSON_Prop, 'body.gamingData.coinIn')]]></function>
-        <function name="coinOut"><![CDATA[json(#JSON_Prop, 'body.gamingData.coinOut')]]></function>
-        <function name="games"><![CDATA[json(#JSON_Prop, 'body.gamingData.games')]]></function>
-        <function name="hotPlayer"><![CDATA[json(#JSON_Prop, 'body.gamingData.hotPlayer')]]></function>
-        <function name="abandonedCard"><![CDATA[json(#JSON_Prop, 'body.gamingData.abandonedCard')]]></function>
-        <function name="messageType"><![CDATA[substring(json(#JSON_Prop, 'header.originatorHeader.routingKey'),sum(lastIndexOf(json(#JSON_Prop, 'header.originatorHeader.routingKey'),'.'),1))]]></function>
       </functions>
     </function-context>
   </window-functional>
